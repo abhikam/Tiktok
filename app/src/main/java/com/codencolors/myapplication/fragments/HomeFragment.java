@@ -60,10 +60,12 @@ public class HomeFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         setRecyclerView();
+
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
             new VideosAsync(getContext()).execute();
         else
             requestForRead();
+
         return view;
     }
 

@@ -43,7 +43,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void requestForRead(){
-        ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_PERMISSION);
+        ActivityCompat.requestPermissions( this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, READ_PERMISSION);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class SplashActivity extends AppCompatActivity {
         switch (requestCode) {
             case READ_PERMISSION:
                 Log.d(TAG, "onRequestPermissionsResult: " + READ_PERMISSION);
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     startActivity(new Intent(this, HomeActivity.class));
                     finish();
                 }
