@@ -45,7 +45,7 @@ import butterknife.ButterKnife;
 public class HomeFragment extends Fragment {
 
     @BindView(R.id.rv_home) RecyclerView recyclerView;
-    private HomeAdapter adapter;
+
     private static final String TAG = "HomeFragment";
 
     @Override
@@ -60,13 +60,10 @@ public class HomeFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         setRecyclerView();
-
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
             new VideosAsync(getContext()).execute();
-        }
-        else {
+        else
             requestForRead();
-        }
         return view;
     }
 
@@ -100,25 +97,9 @@ public class HomeFragment extends Fragment {
 
 
     private void requestForRead(){
-        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+        ActivityCompat.requestPermissions( getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.d(TAG, "onRequestPermissionsResult: ");
-        switch (requestCode) {
-            case 100:
-
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    new VideosAsync(getContext()).execute();
-                else
-                    Toast.makeText(getContext(), "Request Denied", Toast.LENGTH_SHORT).show();
-                break;
-            default:
-                break;
-        }
-    }
     public class VideosAsync extends AsyncTask<Void, Void, List<String>> {
         private Context context;
         private List<String> videoList;
@@ -136,8 +117,9 @@ public class HomeFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<String> videos) {
-            adapter = new HomeAdapter(videos, context);
+            HomeAdapter adapter = new HomeAdapter(videos, context);
             recyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         }
 
         @Override

@@ -77,4 +77,10 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }
